@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
-import { useColumnDrag } from "@/components/kanban/hooks/use-column-drag";
-import { Column } from "@/components/kanban/types/types";
+import { useColumnDrag } from "@/modules/board/hooks/use-column-drag";
+import { Column } from "@/modules/board/types";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 

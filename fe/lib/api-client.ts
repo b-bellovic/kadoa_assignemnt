@@ -1,4 +1,4 @@
-import { clearAuthToken, getAuthToken } from "@/lib/auth-token";
+import { clearAuthToken, getAuthToken } from "@/modules/auth/auth-token";
 import { API_URL } from "./config";
 
 /**

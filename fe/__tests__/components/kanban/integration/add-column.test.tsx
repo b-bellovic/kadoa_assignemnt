@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { screen, fireEvent, waitFor } from "@testing-library/react";
-import KanbanBoard from "@/components/kanban/board/kanban-board";
+import KanbanBoard from "@/modules/board/components/kanban-board";
 
 // Create mock objects before any imports
 const mockApiObjects = vi.hoisted(() => {

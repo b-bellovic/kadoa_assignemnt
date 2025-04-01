@@ -1,4 +1,4 @@
-import { BoardData, Column, Task } from "@/components/kanban/types/types";
+import { BoardData, Column, Task } from "@/modules/board/types";
 
 /**
  * Mock board data with columns and tasks for testing
