@@ -1,0 +1,32 @@
+{
+	"name": "kadoa",
+	"private": true,
+	"workspaces": ["fe", "be"],
+	"scripts": {
+		"dev": "yarn workspaces foreach -Api run dev",
+		"build": "yarn workspaces foreach -Api run build",
+		"start": "yarn workspaces foreach -Api run start",
+		"migrate": "yarn workspace be drizzle-kit push",
+		"seed": "yarn workspace be seed",
+		"studio": "yarn workspace be drizzle-kit studio",
+		"syncpack:list": "syncpack list-mismatches",
+		"syncpack:fix": "syncpack fix-mismatches",
+		"syncpack:format": "syncpack format",
+		"biome:check": "biome check .",
+		"format": "biome format . --write",
+		"lint": "biome lint .",
+		"ci": "biome ci .",
+		"db:init": "yarn workspace @kadoa/backend db:push"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@yarnpkg/plugin-workspace-tools": "^4.0.0",
+		"concurrently": "^9.1.2",
+		"npm-run-all": "^4.1.5",
+		"syncpack": "^11.2.1"
+	},
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"packageManager": "yarn@4.8.1+sha512.bc946f2a022d7a1a38adfc15b36a66a3807a67629789496c3714dd1703d2e6c6b1c69ff9ec3b43141ac7a1dd853b7685638eb0074300386a59c18df351ef8ff6"
+}

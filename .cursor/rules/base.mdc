@@ -1,0 +1,7 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+- use yarn as package manger
+- use shadcn (https://ui.shadcn.com/docs/components) and tailwindcss for UI when possible

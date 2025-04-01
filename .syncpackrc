@@ -1,0 +1,22 @@
+{
+  "dependencyTypes": ["prod", "dev", "peer"],
+  "source": ["package.json", "fe/package.json", "be/package.json"],
+  "semverGroups": [
+    {
+      "label": "use exact version numbers in production",
+      "packages": ["**"],
+      "dependencyTypes": ["prod"],
+      "dependencies": ["**"],
+      "range": ""
+    },
+    {
+      "label": "use caret ranges for dev dependencies",
+      "packages": ["**"],
+      "dependencyTypes": ["dev"],
+      "dependencies": ["**"],
+      "range": "^"
+    }
+  ],
+  "sortFirst": ["name", "private", "version", "scripts", "workspaces", "dependencies", "devDependencies", "peerDependencies"],
+  "sortAz": ["dependencies", "devDependencies", "peerDependencies", "scripts"]
+} 
