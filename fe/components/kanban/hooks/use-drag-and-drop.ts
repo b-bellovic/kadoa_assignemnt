@@ -25,6 +25,8 @@ interface UseDragAndDropProps {
 	tasks: Task[];
 	updateTask: (params: UpdateTaskParams) => Promise<void>;
 	updateColumn: (params: UpdateColumnParams) => Promise<void>;
+	reorderTasks?: (params: { columnId: string; taskIds: string[] }) => Promise<void>;
+	reorderColumns?: (columnIds: string[]) => Promise<void>;
 }
 
 /**
@@ -36,9 +38,11 @@ export const useDragAndDrop = ({
 	tasks,
 	updateTask,
 	updateColumn,
+	reorderTasks,
+	reorderColumns,
 }: UseDragAndDropProps) => {
-	const taskDrag = useTaskDrag({ tasks, updateTask });
-	const columnDrag = useColumnDrag({ columns, updateColumn });
+	const taskDrag = useTaskDrag({ tasks, updateTask, reorderTasks });
+	const columnDrag = useColumnDrag({ columns, updateColumn, reorderColumns });
 
 	const {
 		activeTask,

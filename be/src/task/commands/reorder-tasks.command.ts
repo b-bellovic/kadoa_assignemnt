@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { CommandHandler, ICommand, ICommandHandler } from "@nestjs/cqrs";
 import { eq } from "drizzle-orm";
-import { DatabaseService } from "../../database/database.service";
+import { DatabaseService } from "../../database";
 import { tasks } from "../../schema";
 import { TaskService } from "../task.service";
 

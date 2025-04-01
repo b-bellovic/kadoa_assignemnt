@@ -39,6 +39,8 @@ export default function KanbanBoard() {
 		deleteTask,
 		updateTaskMutation,
 		updateColumnMutation,
+		reorderTasks,
+		reorderColumns,
 	} = useKanbanService();
 
 	// Setup real-time updates
@@ -75,6 +77,8 @@ export default function KanbanBoard() {
 		tasks,
 		updateTask: handleUpdateTask,
 		updateColumn: handleUpdateColumn,
+		reorderTasks,
+		reorderColumns,
 	});
 
 	// Column handlers

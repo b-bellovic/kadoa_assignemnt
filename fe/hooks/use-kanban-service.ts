@@ -79,6 +79,58 @@ export function useKanbanService() {
 		},
 	);
 
+	const reorderColumnsMutation = createMutation(
+		queryClient,
+		(columnIds: string[]) => kanbanApi.reorderColumns(columnIds),
+		{
+			meta: {
+				invalidateQueries: boardQueryKey,
+			},
+		},
+	);
+
+	const reorderTasksMutation = createMutation(
+		queryClient,
+		({ columnId, taskIds }: { columnId: string; taskIds: string[] }) =>
+			kanbanApi.reorderTasks(columnId, taskIds),
+		{
+			onMutate: async ({ columnId, taskIds }) => {
+				await queryClient.cancelQueries({ queryKey: boardQueryKey });
+
+				const previousBoard =
+					queryClient.getQueryData<BoardData>(boardQueryKey);
+
+				if (previousBoard) {
+					// Create a mapping of taskId to new order
+					const orderMap = taskIds.reduce((acc, id, index) => {
+						acc[id] = index;
+						return acc;
+					}, {} as Record<string, number>);
+
+					// Update tasks with new order
+					queryClient.setQueryData<BoardData>(boardQueryKey, {
+						...previousBoard,
+						tasks: previousBoard.tasks.map((task) =>
+							task.columnId === columnId && orderMap[task.id] !== undefined
+								? { ...task, order: orderMap[task.id] }
+								: task,
+						),
+					});
+				}
+
+				return { previousBoard };
+			},
+			onError: (err, variables, context) => {
+				if (context?.previousBoard) {
+					queryClient.setQueryData(boardQueryKey, context.previousBoard);
+				}
+			},
+			onSettled: () => {
+				queryClient.invalidateQueries({ queryKey: boardQueryKey });
+			},
+		},
+	);
+
 	const deleteColumnMutation = createMutation(
 		queryClient,
 		(columnId: string) => kanbanApi.deleteColumn(columnId),
@@ -208,20 +260,24 @@ export function useKanbanService() {
 		createColumn: createColumnMutation.mutate,
 		updateColumn: updateColumnMutation.mutate,
 		deleteColumn: deleteColumnMutation.mutate,
+		reorderColumns: reorderColumnsMutation.mutate,
 		isCreatingColumn: createColumnMutation.isPending,
 
 		// Task operations
 		createTask: createTaskMutation.mutate,
 		updateTask: updateTaskMutation.mutate,
 		deleteTask: deleteTaskMutation.mutate,
+		reorderTasks: reorderTasksMutation.mutate,
 		isCreatingTask: createTaskMutation.isPending,
 
 		// Raw mutations (for more complex use cases)
 		createColumnMutation,
 		updateColumnMutation,
 		deleteColumnMutation,
+		reorderColumnsMutation,
 		createTaskMutation,
 		updateTaskMutation,
 		deleteTaskMutation,
+		reorderTasksMutation,
 	};
 }

@@ -138,6 +138,21 @@ export const kanbanApi = {
 	},
 
 	/**
+	 * Reorder tasks within a column
+	 * @param columnId - ID of the column containing the tasks
+	 * @param taskIds - Array of task IDs in their new order
+	 * @returns Promise resolving when the tasks are reordered
+	 */
+	reorderTasks: async (columnId: string, taskIds: string[]): Promise<void> => {
+		await apiClient(`/board/column/${columnId}/reorder`, {
+			method: "POST",
+			body: JSON.stringify({
+				taskIds,
+			}),
+		});
+	},
+
+	/**
 	 * Create a new task
 	 * @param title - Task title
 	 * @param description - Task description
