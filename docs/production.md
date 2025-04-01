@@ -1,6 +1,6 @@
 # Production Deployment
 
-This document outlines how to deploy the Kadoa application in a production environment.
+This document outlines how to deploy the Kadoa Assignment application in a production environment.
 
 ## Overview
 

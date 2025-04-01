@@ -1,4 +1,4 @@
-# Kadoa - Kanban Board Application
+# Kadoa Assignment - Kanban Board Application
 
 A real-time Kanban board application with AI task generation.
 
@@ -34,7 +34,13 @@ yarn dev
 
 For detailed documentation, please check the `/docs` directory:
 
+- [Getting Started](./docs/index.md)
 - [Architecture](./docs/architecture.md)
 - [Local Development](./docs/local-development.md)
+- [Production Deployment](./docs/production.md)
+- [Database](./docs/database.md)
+- [Real-time Events](./docs/real-time-sse.md)
+- [LLM Integration](./docs/llm-integration.md)
+- [Testing](./docs/testing.md)
 - [Design & Scalability Considerations](./docs/design-scalability.md)
 - [Authentication](./docs/authentication.md) 

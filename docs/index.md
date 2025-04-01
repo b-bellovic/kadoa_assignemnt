@@ -1,6 +1,6 @@
-# Kadoa Documentation
+# Kadoa Assignment Documentation
 
-Welcome to the Kadoa documentation. This documentation covers all aspects of the Kanban board application.
+Welcome to the Kadoa Assignment documentation. This documentation covers all aspects of the Kanban board application.
 
 ## Getting Started
 
@@ -19,12 +19,3 @@ Welcome to the Kadoa documentation. This documentation covers all aspects of the
 
 - [Testing Approach](./testing.md) - Information about testing strategies and examples  
 - [Design & Scalability Considerations](./design-scalability.md) - Information about design decisions and scalability
-
-## Quick Links
-
-- [GitHub Repository](https://github.com/yourusername/kadoa)
-- [Live Demo](https://your-demo-url.com) (if available)
-
-## Support
-
-If you encounter any issues or have questions, please [open an issue](https://github.com/yourusername/kadoa/issues) on GitHub.

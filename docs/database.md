@@ -1,6 +1,6 @@
 # Database Architecture
 
-The Kadoa application uses a PostgreSQL database with Drizzle ORM to manage data persistence. This document outlines the database architecture, schema design, and implementation details.
+The Kadoa Assignment application uses a PostgreSQL database with Drizzle ORM to manage data persistence. This document outlines the database architecture, schema design, and implementation details.
 
 ## Database Technology Stack
 

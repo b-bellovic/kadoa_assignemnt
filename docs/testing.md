@@ -1,6 +1,6 @@
 # Testing Approach
 
-This documentation covers the testing strategy employed in the Kadoa application. Note that **only minimal testing was added** to showcase the approach that would be used in a complete implementation.
+This documentation covers the testing strategy employed in the Kadoa Assignment application. Note that **only minimal testing was added** to showcase the approach that would be used in a complete implementation.
 
 ## Testing Strategy
 

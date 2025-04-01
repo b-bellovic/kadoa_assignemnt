@@ -10,7 +10,7 @@ import { ThemeProvider } from "@/providers/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "Kadoa Kanban Board",
+	title: "Kadoa Assignment Kanban Board",
 	description: "A real-time Kanban board application",
 };
 

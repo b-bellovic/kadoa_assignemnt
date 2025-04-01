@@ -1,4 +1,4 @@
-# Kadoa - Senior Software Engineer Assignment
+# Kadoa Assignment - Senior Software Engineer Assignment
 
 ### Requirements
 
