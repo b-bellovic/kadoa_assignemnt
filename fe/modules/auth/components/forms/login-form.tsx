@@ -20,6 +20,7 @@ import type React from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { AuthErrorBoundary } from "@/components/ui/custom/error-boundary";
 
 export const loginSchema = z.object({
 	email: z.string().email({ message: "Please enter a valid email address" }),
@@ -31,11 +32,17 @@ export const loginSchema = z.object({
 export type LoginFormValues = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
-	const { login, loading, isAuthenticated } = useAuth();
+	const { login, loading, isAuthenticated, setIsLoggedOut } = useAuth();
 	const router = useRouter();
 	const { toast } = useToast();
 	const searchParams = useSearchParams();
-	const redirect = searchParams.get("redirect");
+	
+	// Get the redirect path and ensure it's properly formed
+	const redirectParam = searchParams?.get("redirect");
+	// If redirect exists, make sure it starts with a slash
+	const redirect = redirectParam 
+		? redirectParam.startsWith('/') ? redirectParam : `/${redirectParam}`
+		: "/dashboard";
 
 	const form = useForm<LoginFormValues>({
 		resolver: zodResolver(loginSchema),
@@ -45,17 +52,16 @@ export function LoginForm() {
 		},
 	});
 
+	// Reset logged out state when visiting login page
+	useEffect(() => {
+		setIsLoggedOut(false);
+	}, [setIsLoggedOut]);
+
 	// Handle form submission
 	const onSubmit = async (values: LoginFormValues) => {
 		try {
+			// The redirect is handled in useAuthService after successful login
 			await login({ email: values.email, password: values.password });
-
-			// Get saved redirect path or default to dashboard
-			const savedRedirect = localStorage.getItem("authRedirect");
-			const redirectPath = savedRedirect || "/dashboard";
-			localStorage.removeItem("authRedirect"); // Clear saved redirect
-
-			router.push(redirectPath);
 		} catch (error: any) {
 			toast({
 				title: "Authentication failed",
@@ -66,71 +72,63 @@ export function LoginForm() {
 		}
 	};
 
-	// Save redirect path if provided
-	useEffect(() => {
-		if (redirect && typeof window !== "undefined") {
-			localStorage.setItem("authRedirect", redirect);
-		}
-	}, [redirect]);
-
 	// Check if already authenticated
 	useEffect(() => {
 		if (!loading && isAuthenticated) {
-			const savedRedirect = localStorage.getItem("authRedirect");
-			const redirectPath = savedRedirect || "/dashboard";
-			localStorage.removeItem("authRedirect"); // Clear saved redirect
-			router.push(redirectPath);
+			router.push(redirect);
 		}
-	}, [isAuthenticated, loading, router]);
+	}, [isAuthenticated, loading, router, redirect]);
 
 	return (
-		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)}>
-				<CardContent className="space-y-4">
-					<FormField
-						control={form.control}
-						name="email"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Email</FormLabel>
-								<FormControl>
-									<Input
-										placeholder="name@example.com"
-										type="email"
-										{...field}
-									/>
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-					<FormField
-						control={form.control}
-						name="password"
-						render={({ field }) => (
-							<FormItem>
-								<FormLabel>Password</FormLabel>
-								<FormControl>
-									<Input type="password" {...field} />
-								</FormControl>
-								<FormMessage />
-							</FormItem>
-						)}
-					/>
-				</CardContent>
-				<CardFooter className="flex flex-col space-y-2">
-					<Button type="submit" className="w-full" disabled={loading}>
-						{loading ? "Logging in..." : "Login"}
-					</Button>
-					<p className="text-sm text-center text-muted-foreground">
-						Don&apos;t have an account?{" "}
-						<Link href="/register" className="text-primary hover:underline">
-							Register
-						</Link>
-					</p>
-				</CardFooter>
-			</form>
-		</Form>
+		<AuthErrorBoundary>
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)}>
+					<CardContent className="space-y-4">
+						<FormField
+							control={form.control}
+							name="email"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Email</FormLabel>
+									<FormControl>
+										<Input
+											placeholder="name@example.com"
+											type="email"
+											{...field}
+										/>
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+						<FormField
+							control={form.control}
+							name="password"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Password</FormLabel>
+									<FormControl>
+										<Input type="password" {...field} />
+									</FormControl>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</CardContent>
+					<CardFooter className="flex flex-col space-y-2">
+						<Button type="submit" className="w-full" disabled={loading}>
+							{loading ? "Logging in..." : "Login"}
+						</Button>
+						<p className="text-sm text-center text-muted-foreground">
+							Don&apos;t have an account?{" "}
+							<Link href="/register" className="text-primary hover:underline">
+								Register
+							</Link>
+						</p>
+					</CardFooter>
+				</form>
+			</Form>
+		</AuthErrorBoundary>
 	);
 }
 

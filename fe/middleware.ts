@@ -29,7 +29,7 @@ export function middleware(request: NextRequest) {
 	if (!authToken) {
 		const loginUrl = new URL("/login", request.url);
 
-		// Add redirect parameter
+		// Add redirect parameter WITHOUT encoding - Next.js handles this automatically
 		loginUrl.searchParams.set("redirect", path);
 
 		return NextResponse.redirect(loginUrl);
@@ -39,7 +39,17 @@ export function middleware(request: NextRequest) {
 	return NextResponse.next();
 }
 
-// Match all routes except static resources
+// Match all routes except static resources and api routes
 export const config = {
-	matcher: ["/((?!_next/static|_next/image|images|public).*)"],
+	matcher: [
+		/*
+		 * Match all request paths except for the ones starting with:
+		 * - _next/static (static files)
+		 * - _next/image (image optimization files)
+		 * - favicon.ico (favicon file)
+		 * - public (public files)
+		 * - images (image files)
+		 */
+		"/((?!_next/static|_next/image|favicon.ico|public|images).*)",
+	],
 };

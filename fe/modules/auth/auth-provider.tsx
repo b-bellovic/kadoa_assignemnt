@@ -14,12 +14,15 @@ interface AuthContextType {
 	register: (credentials: Credentials) => void;
 	logout: () => Promise<void>;
 	isAuthenticated: boolean;
+	isLoggedOut: boolean;
+	setIsLoggedOut: (value: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [tokenChecked, setTokenChecked] = useState(false);
+	const [isLoggedOut, setIsLoggedOut] = useState(false);
 
 	const auth = useAuthService();
 
@@ -34,6 +37,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			const token = getAuthToken();
 			if (token) {
 				auth.refetch();
+				// If token exists, we're not logged out
+				if (isLoggedOut) setIsLoggedOut(false);
 			}
 		};
 
@@ -42,7 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 		const intervalId = setInterval(refreshUserStatus, 5 * 60 * 1000);
 
 		return () => clearInterval(intervalId);
-	}, [auth.refetch, tokenChecked]);
+	}, [auth.refetch, tokenChecked, isLoggedOut]);
 
 	const loading = auth.loading || !tokenChecked;
 
@@ -55,7 +60,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 				login: auth.login,
 				register: auth.register,
 				logout: auth.logout,
-				isAuthenticated: auth.isAuthenticated,
+				isAuthenticated: auth.isAuthenticated && !isLoggedOut,
+				isLoggedOut,
+				setIsLoggedOut,
 			}}
 		>
 			{children}
