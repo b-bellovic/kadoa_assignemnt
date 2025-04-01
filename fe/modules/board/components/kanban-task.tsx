@@ -6,7 +6,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { formatDistanceToNow } from "date-fns";
 import { isValid } from "date-fns";
-import { Edit } from "lucide-react";
+import { Edit, Clock } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Task } from "../types";
 import { TaskDetailModal } from "./task-detail-modal";
@@ -110,12 +110,12 @@ export default function KanbanTask({
 				<Card
 					ref={setNodeRef}
 					style={style}
-					className={`cursor-grab active:cursor-grabbing bg-background border-2 
-            ${isMovingBetweenColumns ? "border-primary" : isBeingDraggedOver ? "border-primary border-dashed" : "border-border/60"} 
-            hover:border-border transition-all group relative overflow-hidden rounded-lg
-            ${isDragging ? "shadow-2xl ring-2 ring-primary/20 backdrop-blur-sm rotate-1" : "hover:shadow-lg"}
-            ${isActive ? "ring-2 ring-primary/40" : ""}
-            ${isBeingDraggedOver ? "scale-[1.01] shadow-lg" : ""}
+					className={`cursor-grab active:cursor-grabbing bg-background border-l-4 
+            ${isMovingBetweenColumns ? "border-l-primary" : isBeingDraggedOver ? "border-l-primary" : "border-l-primary/50"} 
+            hover:border-l-primary hover:shadow-md transition-all group relative overflow-hidden rounded-md
+            ${isDragging ? "shadow-xl rotate-1" : ""}
+            ${isActive ? "ring-1 ring-primary/40" : ""}
+            ${isBeingDraggedOver ? "scale-[1.01] shadow-md" : ""}
             ${isDraggingAny && !isDragging ? "opacity-80" : ""}
             duration-200`}
 					{...attributes}
@@ -130,14 +130,14 @@ export default function KanbanTask({
 						className={`absolute inset-0 bg-gradient-to-r 
             ${
 							isMovingBetweenColumns
-								? "from-primary/25 via-primary/20 to-transparent opacity-100"
+								? "from-primary/10 via-primary/5 to-transparent opacity-100"
 								: isBeingDraggedOver
-									? "from-primary/15 via-primary/10 to-transparent opacity-100"
-									: "from-primary/15 via-primary/10 to-transparent opacity-0 group-hover:opacity-100"
+									? "from-primary/10 via-primary/5 to-transparent opacity-100"
+									: "from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100"
 						} 
             pointer-events-none transition-opacity`}
 					/>
-					<CardContent className="p-3 relative">
+					<CardContent className="p-3 pb-2 relative">
 						<div className="space-y-2">
 							<div>
 								<h3 className="text-sm font-semibold text-foreground leading-tight group-hover:text-primary transition-colors">
@@ -149,21 +149,20 @@ export default function KanbanTask({
 									</p>
 								)}
 							</div>
-							<div className="flex items-center text-xs">
-								<p className="text-primary/80 group-hover:text-primary transition-colors">
-									Updated {lastUpdated}
-								</p>
-							</div>
 						</div>
 					</CardContent>
-					<CardFooter className="p-2 pt-0 flex justify-end relative">
+					<CardFooter className="p-2 pt-0 flex justify-between items-center relative">
+						<div className="flex items-center text-xs text-muted-foreground">
+							<Clock className="h-3 w-3 mr-1 inline-block" />
+							<span className="text-xs">{lastUpdated}</span>
+						</div>
 						<Button
 							variant="ghost"
 							size="icon"
 							onClick={handleEditClick}
-							className="text-muted-foreground/90 hover:text-primary hover:bg-primary/15"
+							className="h-7 w-7 text-muted-foreground hover:text-primary hover:bg-primary/10"
 						>
-							<Edit className="h-4 w-4" />
+							<Edit className="h-3.5 w-3.5" />
 						</Button>
 					</CardFooter>
 				</Card>

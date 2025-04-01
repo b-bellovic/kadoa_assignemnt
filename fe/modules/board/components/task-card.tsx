@@ -8,6 +8,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { formatDistanceToNow, isValid } from "date-fns";
 import { Edit, Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -58,8 +60,8 @@ export default function TaskCard({ task, onDelete, onEdit }: TaskCardProps) {
 		<Card className="w-full mb-2 shadow-sm hover:shadow transition-shadow">
 			<CardHeader className="p-3 pb-0">
 				{isEditing ? (
-					<input
-						className="w-full p-1 border rounded"
+					<Input
+						className="w-full"
 						value={title}
 						onChange={(e) => setTitle(e.target.value)}
 						autoFocus
@@ -70,8 +72,8 @@ export default function TaskCard({ task, onDelete, onEdit }: TaskCardProps) {
 			</CardHeader>
 			<CardContent className="p-3 pt-2">
 				{isEditing ? (
-					<textarea
-						className="w-full h-20 p-1 border rounded text-sm"
+					<Textarea
+						className="w-full min-h-[80px] text-sm"
 						value={description}
 						onChange={(e) => setDescription(e.target.value)}
 					/>

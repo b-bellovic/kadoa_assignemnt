@@ -8,6 +8,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { ThemeToggle } from "@/components/ui/custom/theme-toggle";
+import { AuthErrorBoundary } from "@/components/ui/custom/error-boundary";
 import type React from "react";
 
 export default function RegisterPage() {
@@ -23,7 +24,9 @@ export default function RegisterPage() {
 						Create a new account to access your kanban board
 					</CardDescription>
 				</CardHeader>
-				<RegisterForm />
+				<AuthErrorBoundary>
+					<RegisterForm />
+				</AuthErrorBoundary>
 			</Card>
 		</div>
 	);

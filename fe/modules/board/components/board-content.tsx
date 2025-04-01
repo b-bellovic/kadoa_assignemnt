@@ -105,7 +105,7 @@ const BoardContentComponent = ({
 	const activeId = activeTask?.id || activeColumn?.id;
 
 	return (
-		<div className="flex gap-4 overflow-x-auto pb-4 h-[calc(100vh-13rem)] min-h-[500px]">
+		<div className="flex gap-5 overflow-x-auto pb-2 h-full min-h-0">
 			<SortableContext
 				items={columns.map((col) => col.id)}
 				strategy={horizontalListSortingStrategy}

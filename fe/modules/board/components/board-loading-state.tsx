@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { LoadingSpinner } from "@/components/ui/custom/loading-spinner";
 
 interface BoardLoadingStateProps {
 	isLoading: boolean;
@@ -15,20 +16,16 @@ export function BoardLoadingState({
 	error,
 }: BoardLoadingStateProps) {
 	if (isLoading) {
-		return (
-			<div className="flex justify-center items-center p-8">
-				<div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-			</div>
-		);
+		return <LoadingSpinner />;
 	}
 
 	if (error) {
 		return (
 			<div className="p-8 text-center">
-				<h3 className="text-lg font-medium text-red-600">
+				<h3 className="text-lg font-medium text-destructive">
 					Error loading board
 				</h3>
-				<p className="mt-2 text-gray-600">Please try refreshing the page</p>
+				<p className="mt-2 text-muted-foreground">Please try refreshing the page</p>
 				<Button
 					variant="outline"
 					className="mt-4"

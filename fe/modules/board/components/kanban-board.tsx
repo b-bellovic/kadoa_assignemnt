@@ -150,7 +150,7 @@ export default function KanbanBoard() {
   }
 
   return (
-    <div className="flex flex-col h-full space-y-4">
+    <div className="flex flex-col h-full space-y-3">
       <BoardHeader onAddColumn={() => setIsAddingColumn(true)}/>
 
       <DndContext
@@ -159,18 +159,20 @@ export default function KanbanBoard() {
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
-        <BoardContent
-          columns={columns}
-          tasks={tasks}
-          activeTask={activeTask}
-          activeColumn={activeColumn}
-          currentTaskColumnId={currentTaskColumnId}
-          onAddTask={handleSelectColumnForTask}
-          onAddAITask={handleSelectColumnForAITask}
-          onDeleteColumn={handleDeleteColumn}
-          onDeleteTask={handleDeleteTask}
-          onEditTask={handleEditTask}
-        />
+        <div className="flex-1 min-h-0 overflow-hidden">
+          <BoardContent
+            columns={columns}
+            tasks={tasks}
+            activeTask={activeTask}
+            activeColumn={activeColumn}
+            currentTaskColumnId={currentTaskColumnId}
+            onAddTask={handleSelectColumnForTask}
+            onAddAITask={handleSelectColumnForAITask}
+            onDeleteColumn={handleDeleteColumn}
+            onDeleteTask={handleDeleteTask}
+            onEditTask={handleEditTask}
+          />
+        </div>
 
         <DragOverlay zIndex={999}>
           <DragOverlayContent

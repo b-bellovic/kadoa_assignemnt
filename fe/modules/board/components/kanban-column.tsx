@@ -25,7 +25,7 @@ import {
 	verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { MoreHorizontal, Plus, Sparkles, Trash } from "lucide-react";
+import { MoreHorizontal, Plus, Sparkles, Trash, ListPlus } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Column, Task } from "../types";
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog";
@@ -142,14 +142,14 @@ export default function KanbanColumn({
 				style={style}
 				data-column-id={column.id}
 				data-testid="kanban-column"
-				className={`w-[300px] shrink-0 border-2 border-border/80
-          bg-gradient-to-b from-card to-card/90 flex flex-col h-full rounded-xl
-          ${isDraggingColumn ? "opacity-50 scale-[1.02] shadow-2xl ring-2 ring-primary/20" : ""}
-          shadow-[0_0_0_2px_rgba(0,0,0,0.08)]
+				className={`w-[300px] shrink-0 border-t-4 border-primary/30
+          bg-card/95 flex flex-col h-full rounded-md
+          ${isDraggingColumn ? "opacity-50 scale-[1.02] shadow-2xl" : ""}
+          shadow-sm hover:shadow-md
           transition-all duration-200`}
 			>
 				<CardHeader
-					className={`p-3 flex flex-row items-center space-y-0 bg-gradient-to-b from-muted/90 via-muted/60 to-transparent rounded-t-[calc(0.75rem-1px)] border-b border-border/50
+					className={`p-3 flex flex-row items-center space-y-0 bg-gradient-to-b from-muted/70 via-muted/40 to-transparent rounded-t-[calc(0.5rem-1px)] border-b border-border/50
             ${isDraggingColumn ? "cursor-grabbing" : "cursor-grab"}`}
 					{...attributes}
 					{...listeners}
@@ -158,9 +158,9 @@ export default function KanbanColumn({
 						<span className="font-semibold">{column.title}</span>
 						<Badge
 							variant="secondary"
-							className="bg-primary/20 text-primary hover:bg-primary/30 transition-colors"
+							className="bg-primary/10 text-primary hover:bg-primary/20 transition-colors"
 						>
-							{sortedTasks.length} {sortedTasks.length === 1 ? "task" : "tasks"}
+							{sortedTasks.length}
 						</Badge>
 					</CardTitle>
 					<DropdownMenu>
@@ -171,7 +171,7 @@ export default function KanbanColumn({
 										<Button
 											variant="ghost"
 											size="icon"
-											className="text-muted-foreground hover:text-primary hover:bg-primary/10"
+											className="h-7 w-7 text-muted-foreground hover:text-primary hover:bg-primary/10"
 										>
 											<MoreHorizontal className="h-4 w-4" />
 										</Button>
@@ -219,11 +219,15 @@ export default function KanbanColumn({
 					</DropdownMenu>
 				</CardHeader>
 
-				<CardContent className="px-2 pt-2 pb-3 flex-1 overflow-y-auto [mask-image:linear-gradient(to_bottom,transparent,black_20px,black_calc(100%-20px),transparent)]">
+				<CardContent className="px-2 pt-2 pb-3 flex-1 overflow-y-auto">
 					<div className="space-y-2 min-h-[50px]">
 						{!isDragging && sortedTasks.length === 0 && (
-							<div className="h-24 border-2 border-dashed border-muted-foreground/40 rounded-lg flex items-center justify-center mx-1 bg-muted/10">
-								<p className="text-sm text-muted-foreground/80">No tasks yet</p>
+							<div className="h-32 flex flex-col items-center justify-center gap-2 mx-1 mt-2 p-4 rounded-md bg-muted/20 border border-dashed border-muted">
+								<ListPlus className="h-5 w-5 text-muted-foreground/60" />
+								<p className="text-sm text-muted-foreground/70 text-center">No tasks yet</p>
+								<Button variant="outline" size="sm" onClick={handleAddTask} className="mt-1">
+									<Plus className="mr-1 h-3.5 w-3.5" /> Add Task
+								</Button>
 							</div>
 						)}
 						<SortableContext

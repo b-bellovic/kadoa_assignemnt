@@ -2,6 +2,9 @@
 
 import React, { Component, ErrorInfo, ReactNode } from "react";
 import Link from "next/link";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface Props {
   children: ReactNode;
@@ -34,15 +37,17 @@ export class ErrorBoundary extends Component<Props, State> {
       }
       
       return (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-md">
-          <h2 className="text-lg font-medium text-red-800">Something went wrong</h2>
-          <p className="mt-2 text-sm text-red-700">
-            An error occurred. Please try refreshing the page or{" "}
-            <Link href="/login" className="underline font-medium">
-              logging in again
-            </Link>
-            .
-          </p>
+        <div className="p-4">
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Something went wrong</AlertTitle>
+            <AlertDescription>
+              An error occurred. Please try refreshing the page or{" "}
+              <Button variant="link" className="p-0 h-auto font-medium" asChild>
+                <Link href="/login">logging in again</Link>
+              </Button>.
+            </AlertDescription>
+          </Alert>
         </div>
       );
     }
@@ -55,15 +60,17 @@ export function AuthErrorBoundary({ children }: { children: ReactNode }) {
   return (
     <ErrorBoundary
       fallback={
-        <div className="p-4 bg-red-50 border border-red-200 rounded-md">
-          <h2 className="text-lg font-medium text-red-800">Authentication Error</h2>
-          <p className="mt-2 text-sm text-red-700">
-            There was a problem with your authentication. Please try{" "}
-            <Link href="/login" className="underline font-medium">
-              logging in again
-            </Link>
-            .
-          </p>
+        <div className="p-4">
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Authentication Error</AlertTitle>
+            <AlertDescription>
+              There was a problem with your authentication. Please try{" "}
+              <Button variant="link" className="p-0 h-auto font-medium" asChild>
+                <Link href="/login">logging in again</Link>
+              </Button>.
+            </AlertDescription>
+          </Alert>
         </div>
       }
     >

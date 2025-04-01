@@ -179,3 +179,12 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+@keyframes fadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+.new-task {
+	animation: fadeIn 0.3s ease-out;
+}
