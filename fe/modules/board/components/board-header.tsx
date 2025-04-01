@@ -14,11 +14,7 @@ interface BoardHeaderProps {
  */
 const BoardHeaderComponent = ({ onAddColumn }: BoardHeaderProps) => {
 	return (
-		<div className="flex justify-between items-center border-b p-2">
-			<div className="flex items-center gap-2">
-				<Layout className="h-5 w-5 text-primary" />
-				<h2 className="text-xl font-semibold">Your Kanban Board</h2>
-			</div>
+		<div className="flex justify-end items-center border-b p-2">
 			<Button
 				variant="secondary"
 				className="relative group overflow-hidden transition-all duration-300 hover:shadow-md hover:bg-secondary/80 border-dashed border-2"

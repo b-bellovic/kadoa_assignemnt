@@ -33,7 +33,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 		<AuthErrorBoundary>
 			<div className="flex flex-col h-screen bg-background/50">
 				<header className="bg-background border-b shadow-sm py-3 px-4 dark:border-gray-800 sticky top-0 z-10">
-					<div className="container mx-auto flex justify-between items-center">
+					<div className=" mx-auto flex justify-between items-center">
 						<div className="flex items-center">
 							<LayoutDashboard className="h-5 w-5 text-primary mr-2" />
 							<h1 className="text-xl font-bold text-foreground/90">Kanban Dashboard</h1>

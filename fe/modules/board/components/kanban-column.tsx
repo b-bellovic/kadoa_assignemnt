@@ -30,6 +30,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Column, Task } from "../types";
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog";
 import KanbanTask from "./kanban-task";
+import { cn } from "@/lib/utils";
 
 interface KanbanColumnProps {
 	column: Column;
@@ -146,7 +147,9 @@ export default function KanbanColumn({
           bg-card/95 flex flex-col h-full rounded-md
           ${isDraggingColumn ? "opacity-50 scale-[1.02] shadow-2xl" : ""}
           shadow-sm hover:shadow-md
-          transition-all duration-200`}
+          transition-all duration-200
+          first:ml-2 last:mr-2
+          `}
 			>
 				<CardHeader
 					className={`p-3 flex flex-row items-center space-y-0 bg-gradient-to-b from-muted/70 via-muted/40 to-transparent rounded-t-[calc(0.5rem-1px)] border-b border-border/50

@@ -7,6 +7,7 @@ import {
 import { memo, useCallback } from "react";
 import { Column, Task, TaskUpdates } from "../types";
 import KanbanColumn from "./kanban-column";
+import { SmoothScrollContainer } from "./smooth-scroll-container";
 
 interface BoardContentProps {
 	columns: Column[];
@@ -105,7 +106,7 @@ const BoardContentComponent = ({
 	const activeId = activeTask?.id || activeColumn?.id;
 
 	return (
-		<div className="flex gap-5 overflow-x-auto pb-2 h-full min-h-0">
+		<SmoothScrollContainer>
 			<SortableContext
 				items={columns.map((col) => col.id)}
 				strategy={horizontalListSortingStrategy}
@@ -126,7 +127,7 @@ const BoardContentComponent = ({
 					/>
 				))}
 			</SortableContext>
-		</div>
+		</SmoothScrollContainer>
 	);
 };
 
