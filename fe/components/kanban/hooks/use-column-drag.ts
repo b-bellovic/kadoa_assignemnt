@@ -1,22 +1,26 @@
 "use client";
 
 import { useState } from "react";
-import { kanbanApi } from "@/api/kanban-api";
 import { arrayMove } from "@dnd-kit/sortable";
-import { Column, UpdateColumnParams } from "../types/types";
 import { calculateNewOrder } from "../utils";
 import { useQueryClient } from "@tanstack/react-query";
+import { Column, UpdateColumnParams } from "../types/types";
+import { kanbanApi } from "@/api/kanban";
 
 interface UseColumnDragProps {
 	columns: Column[];
-	updateColumn: (params: UpdateColumnParams) => Promise<void>;
-	reorderColumns?: (columnIds: string[]) => Promise<void>;
+	updateColumn: (params: UpdateColumnParams) => void;
+	reorderColumns?: (columnIds: string[]) => void;
 }
 
 /**
  * Hook for managing column drag operations specifically
  */
-export function useColumnDrag({ columns, updateColumn, reorderColumns }: UseColumnDragProps) {
+export function useColumnDrag({
+	columns,
+	updateColumn,
+	reorderColumns,
+}: UseColumnDragProps) {
 	const [activeColumn, setActiveColumn] = useState<Column | null>(null);
 	const queryClient = useQueryClient();
 
@@ -64,14 +68,14 @@ export function useColumnDrag({ columns, updateColumn, reorderColumns }: UseColu
 		try {
 			// If we have the reorderColumns function available, use it
 			if (reorderColumns) {
-				await reorderColumns(columnIds);
+				reorderColumns(columnIds);
 			} else {
 				// Fallback to the API method
 				await kanbanApi.reorderColumns(columnIds);
 			}
 
 			// Force a refresh of the board data to ensure consistency
-			queryClient.invalidateQueries({ queryKey: ["board"] });
+			await queryClient.invalidateQueries({ queryKey: ["board"] });
 		} catch (error) {
 			console.error("Failed to reorder columns:", error);
 
@@ -82,7 +86,7 @@ export function useColumnDrag({ columns, updateColumn, reorderColumns }: UseColu
 				overColumnIndex,
 			);
 
-			await updateColumn({
+			updateColumn({
 				columnId: activeId,
 				updates: { order: newOrder },
 			});

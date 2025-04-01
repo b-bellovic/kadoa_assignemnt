@@ -20,14 +20,20 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import {
-	type AITaskFormValues,
-	aiTaskSchema,
-} from "@/lib/schemas/kanban.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+// AI Task schema
+export const aiTaskSchema = z.object({
+	prompt: z
+		.string()
+		.min(10, { message: "Prompt should be at least 10 characters" }),
+});
+
+export type AITaskFormValues = z.infer<typeof aiTaskSchema>;
 
 interface AITaskFormProps {
 	onSubmit: (prompt: string) => Promise<{ title: string; description: string }>;

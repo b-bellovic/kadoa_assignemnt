@@ -11,9 +11,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { type TaskFormValues, taskSchema } from "@/lib/schemas/kanban.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+export const taskSchema = z.object({
+	title: z.string().min(1, { message: "Title is required" }),
+	description: z.string().optional(),
+});
+
+export type TaskFormValues = z.infer<typeof taskSchema>;
 
 interface TaskFormProps {
 	onSubmit: (title: string, description: string) => void;

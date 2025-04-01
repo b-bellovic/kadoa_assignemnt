@@ -1,10 +1,7 @@
 {
 	"name": "kadoa",
 	"private": true,
-	"workspaces": [
-		"fe",
-		"be"
-	],
+	"workspaces": ["fe", "be"],
 	"scripts": {
 		"dev": "yarn workspaces foreach -Api run dev",
 		"build": "yarn workspaces foreach -Api run build",

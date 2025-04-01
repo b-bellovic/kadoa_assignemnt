@@ -36,7 +36,7 @@ describe("useColumnDrag Hook", () => {
 
 	// Mock the updateColumn function
 	const mockUpdateColumn = vi.fn();
-	
+
 	// Create a client for React Query
 	const createWrapper = () => {
 		const queryClient = new QueryClient();
@@ -52,8 +52,9 @@ describe("useColumnDrag Hook", () => {
 
 	it("should initialize with activeColumn set to null", () => {
 		const { result } = renderHook(
-			() => useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
-			{ wrapper: createWrapper() }
+			() =>
+				useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+			{ wrapper: createWrapper() },
 		);
 
 		expect(result.current.activeColumn).toBeNull();
@@ -61,8 +62,9 @@ describe("useColumnDrag Hook", () => {
 
 	it("should allow setting the active column", () => {
 		const { result } = renderHook(
-			() => useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
-			{ wrapper: createWrapper() }
+			() =>
+				useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+			{ wrapper: createWrapper() },
 		);
 
 		act(() => {
@@ -74,8 +76,9 @@ describe("useColumnDrag Hook", () => {
 
 	it("should handle column reordering from first to last position", async () => {
 		const { result } = renderHook(
-			() => useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
-			{ wrapper: createWrapper() }
+			() =>
+				useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+			{ wrapper: createWrapper() },
 		);
 
 		// Set active column
@@ -100,8 +103,9 @@ describe("useColumnDrag Hook", () => {
 
 	it("should handle column reordering from last to first position", async () => {
 		const { result } = renderHook(
-			() => useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
-			{ wrapper: createWrapper() }
+			() =>
+				useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+			{ wrapper: createWrapper() },
 		);
 
 		// Set active column
@@ -126,8 +130,9 @@ describe("useColumnDrag Hook", () => {
 
 	it("should not call updateColumn when source and target columns are the same", async () => {
 		const { result } = renderHook(
-			() => useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
-			{ wrapper: createWrapper() }
+			() =>
+				useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+			{ wrapper: createWrapper() },
 		);
 
 		// Set active column

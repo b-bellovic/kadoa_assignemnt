@@ -44,4 +44,3 @@ export function createMutation<TData, TError, TVariables, TContext>(
 		},
 	});
 }
-

@@ -5,16 +5,17 @@ import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useState } from "react";
 import { useDragAndDrop } from "../hooks/use-drag-and-drop";
 import {
-	TaskUpdates,
-	UpdateColumnParams,
 	UpdateTaskParams,
+	UpdateColumnParams,
+	TaskUpdates,
 } from "../types/types";
+
 import { BoardContent } from "./board-content";
 import { BoardHeader } from "./board-header";
 import { BoardLoadingState } from "./board-loading-state";
 import { BoardModals } from "./board-modals";
 import { DragOverlayContent } from "./drag-overlay-content";
-import {useKanbanEvents} from "@/components/kanban/hooks/use-kanban-events";
+import { useKanbanEvents } from "@/components/kanban/hooks/use-kanban-events";
 
 /**
  * Main Kanban board component
@@ -37,10 +38,13 @@ export default function KanbanBoard() {
 		deleteColumn,
 		createTask,
 		deleteTask,
-		updateTaskMutation,
-		updateColumnMutation,
+		updateTask,
+		updateColumn,
 		reorderTasks,
 		reorderColumns,
+		// Raw mutations
+		updateTaskMutation,
+		updateColumnMutation,
 	} = useKanbanService();
 
 	// Setup real-time updates
@@ -114,7 +118,7 @@ export default function KanbanBoard() {
 	): Promise<void> => {
 		if (!selectedColumnId) return;
 
-		await createTask({
+		createTask({
 			title,
 			description,
 			columnId: selectedColumnId,
@@ -133,7 +137,7 @@ export default function KanbanBoard() {
 		taskId: string,
 		updates: Pick<TaskUpdates, "title" | "description">,
 	) => {
-		updateTaskMutation.mutate({ taskId, updates });
+		updateTask({ taskId, updates });
 	};
 
 	const handleSelectColumnForTask = (columnId: string) => {

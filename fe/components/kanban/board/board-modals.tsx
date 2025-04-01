@@ -1,9 +1,9 @@
 "use client";
 
-import { kanbanApi } from "@/api/kanban-api";
 import TaskForm from "@/components/kanban/forms/task-form";
 import AITaskForm from "../forms/ai-task-form";
 import ColumnForm from "../forms/column-form";
+import { kanbanApi } from "@/api/kanban";
 
 interface BoardModalsProps {
 	isAddingColumn: boolean;

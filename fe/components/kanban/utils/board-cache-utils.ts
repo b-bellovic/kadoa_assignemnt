@@ -135,8 +135,6 @@ export const removeColumnFromCache = (
 	});
 };
 
-
-
 /**
  * Changes the column of a task in the board cache
  * @param queryClient - React Query client

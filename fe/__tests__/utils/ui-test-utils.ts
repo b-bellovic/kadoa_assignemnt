@@ -33,7 +33,6 @@ export function renderWithProviders(
 	};
 }
 
-
 /**
  * Waits for an element with a specific test ID to appear
  * @param testId - The test ID of the element

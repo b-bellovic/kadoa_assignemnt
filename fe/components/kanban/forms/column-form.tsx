@@ -19,12 +19,15 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-	type ColumnFormValues,
-	columnSchema,
-} from "@/lib/schemas/kanban.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+export const columnSchema = z.object({
+	title: z.string().min(1, { message: "Column title is required" }),
+});
+
+export type ColumnFormValues = z.infer<typeof columnSchema>;
 
 interface ColumnFormProps {
 	onSubmit: (title: string) => void;

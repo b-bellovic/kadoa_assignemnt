@@ -1,19 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { Task, UpdateTaskParams } from "../types/types";
+import { Task, UpdateTaskParams, ReorderTasksParams } from "../types/types";
 import { calculateNewOrder, updateDragOverlayData } from "../utils";
 
 interface UseTaskDragProps {
 	tasks: Task[];
-	updateTask: (params: UpdateTaskParams) => Promise<void>;
-	reorderTasks?: (params: { columnId: string; taskIds: string[] }) => Promise<void>;
+	updateTask: (params: UpdateTaskParams) => void;
+	reorderTasks?: (params: ReorderTasksParams) => void;
 }
 
 /**
  * Hook for managing task drag operations specifically
  */
-export function useTaskDrag({ tasks, updateTask, reorderTasks }: UseTaskDragProps) {
+export function useTaskDrag({
+	tasks,
+	updateTask,
+	reorderTasks,
+}: UseTaskDragProps) {
 	const [activeTask, setActiveTask] = useState<Task | null>(null);
 	const [currentTaskColumnId, setCurrentTaskColumnId] = useState<string | null>(
 		null,
@@ -105,7 +109,7 @@ export function useTaskDrag({ tasks, updateTask, reorderTasks }: UseTaskDragProp
 			toIndex,
 		);
 
-		await updateTask({
+		updateTask({
 			taskId: taskId,
 			updates: {
 				columnId: toColumnId,
@@ -126,28 +130,28 @@ export function useTaskDrag({ tasks, updateTask, reorderTasks }: UseTaskDragProp
 		if (fromIndex === toIndex) return;
 
 		const tasksInColumn = getSortedTasksInColumn(columnId);
-		
+
 		// If we have the reorderTasks function available, use it for proper reordering
 		if (reorderTasks) {
 			// Create new array with the task moved to the new position
-			const reorderedTaskIds = [...tasksInColumn].map(t => t.id);
+			const reorderedTaskIds = [...tasksInColumn].map((t) => t.id);
 			// Remove the task from its original position
 			const [movedTask] = reorderedTaskIds.splice(fromIndex, 1);
 			// Insert it at the new position
 			reorderedTaskIds.splice(toIndex, 0, movedTask);
-			
+
 			// Call the reorderTasks function with the new order
-			await reorderTasks({
+			reorderTasks({
 				columnId: columnId,
 				taskIds: reorderedTaskIds,
 			});
 			return;
 		}
-		
+
 		// Fallback to old method if reorderTasks is not available
 		const newOrder = calculateNewOrder(tasksInColumn, fromIndex, toIndex);
 
-		await updateTask({
+		updateTask({
 			taskId: taskId,
 			updates: { order: newOrder },
 		});
@@ -169,7 +173,7 @@ export function useTaskDrag({ tasks, updateTask, reorderTasks }: UseTaskDragProp
 				? tasksInTargetColumn[tasksInTargetColumn.length - 1].order + 1000
 				: 1000;
 
-		await updateTask({
+		updateTask({
 			taskId: taskId,
 			updates: {
 				columnId: toColumnId,

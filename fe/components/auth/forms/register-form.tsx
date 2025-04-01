@@ -12,16 +12,30 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import {
-	type RegisterFormValues,
-	registerSchema,
-} from "@/lib/schemas/auth.schema";
 import { useAuth } from "@/providers/auth-provider";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type React from "react";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+export const registerSchema = z
+	.object({
+		email: z.string().email({ message: "Please enter a valid email address" }),
+		password: z
+			.string()
+			.min(6, { message: "Password must be at least 6 characters" }),
+		confirmPassword: z
+			.string()
+			.min(6, { message: "Password must be at least 6 characters" }),
+	})
+	.refine((data) => data.password === data.confirmPassword, {
+		message: "Passwords don't match",
+		path: ["confirmPassword"],
+	});
+
+export type RegisterFormValues = z.infer<typeof registerSchema>;
 
 export function RegisterForm() {
 	const { register, loading } = useAuth();

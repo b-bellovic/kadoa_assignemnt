@@ -7,12 +7,11 @@ import {
 	useSensor,
 	useSensors,
 } from "@dnd-kit/core";
-import { useState } from "react";
 import {
 	Column,
 	Task,
-	UpdateColumnParams,
 	UpdateTaskParams,
+	UpdateColumnParams,
 } from "../types/types";
 import { useColumnDrag } from "./use-column-drag";
 import { useTaskDrag } from "./use-task-drag";
@@ -25,8 +24,8 @@ interface UseDragAndDropProps {
 	tasks: Task[];
 	updateTask: (params: UpdateTaskParams) => Promise<void>;
 	updateColumn: (params: UpdateColumnParams) => Promise<void>;
-	reorderTasks?: (params: { columnId: string; taskIds: string[] }) => Promise<void>;
-	reorderColumns?: (columnIds: string[]) => Promise<void>;
+	reorderTasks?: (params: { columnId: string; taskIds: string[] }) => void;
+	reorderColumns?: (columnIds: string[]) => void;
 }
 
 /**
