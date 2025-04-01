@@ -14,7 +14,6 @@ The application implements real-time updates using Server-Sent Events (SSE), a c
 - **SSEController**: Exposes a `/events/subscribe` endpoint that:
   - Establishes SSE connections
   - Authenticates clients via JWT token
-  - Manages topics/channels for selective event reception
 
 ### Frontend Implementation (Next.js)
 

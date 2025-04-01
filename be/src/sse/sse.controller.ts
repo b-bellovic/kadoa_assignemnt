@@ -30,7 +30,6 @@ export class SSEController {
 	@Sse("subscribe")
 	subscribe(
 		@Req() req: SSERequest,
-		@Query("topics") topics?: string,
 		@Query("token") token?: string,
 	): Observable<MessageEvent> {
 		try {
@@ -39,7 +38,7 @@ export class SSEController {
 				throw new UnauthorizedException("Authentication required");
 			}
 
-			let payload;
+			let payload: any;
 			try {
 				payload = this.jwtService.verify(token);
 			} catch (error) {
@@ -47,32 +46,12 @@ export class SSEController {
 				throw new UnauthorizedException("Invalid authentication token");
 			}
 
-			// Get user from token payload
 			const user = {
 				id: payload.sub,
 				email: payload.email,
 			} as User;
 
-			// Parse topics from query parameter
-			const topicsList = topics?.split(",").filter(Boolean) || ["*"];
-
-			// Generate client ID
-			const clientId = `${user.id}-${Date.now()}`;
-
-			// Register the response object with the SSE service
-			this.sseService.setClientResponse(clientId, req.res);
-
-			this.logger.log(
-				`Client connected: ${clientId}, topics: ${topicsList.join(", ")}`,
-			);
-
-			// Set headers for SSE
-			req.res.setHeader("Content-Type", "text/event-stream");
-			req.res.setHeader("Cache-Control", "no-cache");
-			req.res.setHeader("Connection", "keep-alive");
-
-			// Return the event stream
-			return this.sseService.subscribe(user, topicsList);
+			return this.sseService.subscribe(user);
 		} catch (error) {
 			this.logger.error(`Error in SSE connection: ${error.message}`);
 			throw error;

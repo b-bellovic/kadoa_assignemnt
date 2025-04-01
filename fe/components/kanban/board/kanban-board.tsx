@@ -4,7 +4,6 @@ import { useKanbanService } from "@/hooks/use-kanban-service";
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import { useState } from "react";
 import { useDragAndDrop } from "../hooks/use-drag-and-drop";
-import useKanbanEvents from "../hooks/use-kanban-events";
 import {
 	TaskUpdates,
 	UpdateColumnParams,
@@ -15,6 +14,7 @@ import { BoardHeader } from "./board-header";
 import { BoardLoadingState } from "./board-loading-state";
 import { BoardModals } from "./board-modals";
 import { DragOverlayContent } from "./drag-overlay-content";
+import {useKanbanEvents} from "@/components/kanban/hooks/use-kanban-events";
 
 /**
  * Main Kanban board component
