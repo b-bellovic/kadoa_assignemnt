@@ -227,8 +227,15 @@ export default function KanbanColumn({
 						{!isDragging && sortedTasks.length === 0 && (
 							<div className="h-32 flex flex-col items-center justify-center gap-2 mx-1 mt-2 p-4 rounded-md bg-muted/20 border border-dashed border-muted">
 								<ListPlus className="h-5 w-5 text-muted-foreground/60" />
-								<p className="text-sm text-muted-foreground/70 text-center">No tasks yet</p>
-								<Button variant="outline" size="sm" onClick={handleAddTask} className="mt-1">
+								<p className="text-sm text-muted-foreground/70 text-center">
+									No tasks yet
+								</p>
+								<Button
+									variant="outline"
+									size="sm"
+									onClick={handleAddTask}
+									className="mt-1"
+								>
 									<Plus className="mr-1 h-3.5 w-3.5" /> Add Task
 								</Button>
 							</div>

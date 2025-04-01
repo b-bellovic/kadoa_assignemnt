@@ -36,12 +36,14 @@ export function LoginForm() {
 	const router = useRouter();
 	const { toast } = useToast();
 	const searchParams = useSearchParams();
-	
+
 	// Get the redirect path and ensure it's properly formed
 	const redirectParam = searchParams?.get("redirect");
 	// If redirect exists, make sure it starts with a slash
-	const redirect = redirectParam 
-		? redirectParam.startsWith('/') ? redirectParam : `/${redirectParam}`
+	const redirect = redirectParam
+		? redirectParam.startsWith("/")
+			? redirectParam
+			: `/${redirectParam}`
 		: "/dashboard";
 
 	const form = useForm<LoginFormValues>({

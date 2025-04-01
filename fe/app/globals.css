@@ -90,7 +90,6 @@
 	}
 }
 
-
 @layer base {
 	:root {
 		--background: 0 0% 100%;
@@ -151,7 +150,6 @@
 	scrollbar-width: thin; /* For Firefox */
 	scrollbar-color: hsla(var(--color-primary), 0.4) transparent; /* For Firefox */
 }
-
 
 ::-webkit-scrollbar {
 	width: 8px;

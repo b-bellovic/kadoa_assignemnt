@@ -10,7 +10,14 @@ import { useRouter } from "next/navigation";
 import { ReactNode } from "react";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
-	const { user, logout, isAuthenticated, loading, isLoggedOut, setIsLoggedOut } = useAuth();
+	const {
+		user,
+		logout,
+		isAuthenticated,
+		loading,
+		isLoggedOut,
+		setIsLoggedOut,
+	} = useAuth();
 	const router = useRouter();
 
 	// Handle logout action
@@ -36,14 +43,21 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 					<div className=" mx-auto flex justify-between items-center">
 						<div className="flex items-center">
 							<LayoutDashboard className="h-5 w-5 text-primary mr-2" />
-							<h1 className="text-xl font-bold text-foreground/90">Kanban Dashboard</h1>
+							<h1 className="text-xl font-bold text-foreground/90">
+								Kanban Dashboard
+							</h1>
 						</div>
 						<div className="flex items-center space-x-3">
 							<p className="text-sm text-muted-foreground bg-muted px-3 py-1 rounded-full hidden sm:block">
 								{user?.email}
 							</p>
 							<ThemeToggle />
-							<Button variant="outline" size="sm" onClick={handleLogout} className="gap-1.5">
+							<Button
+								variant="outline"
+								size="sm"
+								onClick={handleLogout}
+								className="gap-1.5"
+							>
 								<LogOut className="h-4 w-4" />
 								<span className="hidden sm:inline">Logout</span>
 							</Button>
@@ -51,9 +65,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 					</div>
 				</header>
 
-				<main className="flex flex-col flex-1 overflow-hidden">
-					{children}
-				</main>
+				<main className="flex flex-col flex-1 overflow-hidden">{children}</main>
 
 				<footer className="bg-muted/50 py-2 px-4 text-center border-t text-xs text-muted-foreground">
 					<p>Kanban Board · {new Date().getFullYear()}</p>

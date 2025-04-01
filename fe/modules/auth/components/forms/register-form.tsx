@@ -48,8 +48,10 @@ export function RegisterForm() {
 	// Get the redirect path and ensure it's properly formed
 	const redirectParam = searchParams?.get("redirect");
 	// If redirect exists, make sure it starts with a slash
-	const redirect = redirectParam 
-		? redirectParam.startsWith('/') ? redirectParam : `/${redirectParam}`
+	const redirect = redirectParam
+		? redirectParam.startsWith("/")
+			? redirectParam
+			: `/${redirectParam}`
 		: "/dashboard";
 
 	// Reset logged out state when visiting register page

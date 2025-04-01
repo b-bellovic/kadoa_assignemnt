@@ -15,7 +15,7 @@ export default function ProtectedLayout({
 }>) {
 	const { loading, isAuthenticated, isLoggedOut, error } = useAuth();
 	const router = useRouter();
-	
+
 	useEffect(() => {
 		// If not loading and either not authenticated or logged out, redirect to login
 		if (!loading && (!isAuthenticated || isLoggedOut)) {
@@ -28,7 +28,7 @@ export default function ProtectedLayout({
 	if (loading) {
 		return <LoadingSpinner />;
 	}
-	
+
 	// Show error state if there's an authentication error
 	if (error) {
 		return (
@@ -40,13 +40,14 @@ export default function ProtectedLayout({
 						There was a problem with your authentication. Please try{" "}
 						<a href="/login" className="underline font-medium">
 							logging in again
-						</a>.
+						</a>
+						.
 					</AlertDescription>
 				</Alert>
 			</div>
 		);
 	}
-	
+
 	// Show children only if authenticated
 	return isAuthenticated ? children : null;
 }

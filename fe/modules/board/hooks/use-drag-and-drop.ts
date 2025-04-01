@@ -7,12 +7,7 @@ import {
 	useSensor,
 	useSensors,
 } from "@dnd-kit/core";
-import {
-	Column,
-	Task,
-	UpdateTaskParams,
-	UpdateColumnParams,
-} from "../types";
+import { Column, Task, UpdateTaskParams, UpdateColumnParams } from "../types";
 import { useColumnDrag } from "./use-column-drag";
 import { useTaskDrag } from "./use-task-drag";
 

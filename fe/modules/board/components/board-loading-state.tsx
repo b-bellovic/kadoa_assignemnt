@@ -25,7 +25,9 @@ export function BoardLoadingState({
 				<h3 className="text-lg font-medium text-destructive">
 					Error loading board
 				</h3>
-				<p className="mt-2 text-muted-foreground">Please try refreshing the page</p>
+				<p className="mt-2 text-muted-foreground">
+					Please try refreshing the page
+				</p>
 				<Button
 					variant="outline"
 					className="mt-4"
