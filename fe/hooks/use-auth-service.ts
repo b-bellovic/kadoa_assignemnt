@@ -8,7 +8,6 @@ export function useAuthService() {
 	const queryClient = useQueryClient();
 	const router = useRouter();
 
-	// Get user profile if auth token exists
 	const {
 		data: user,
 		isLoading: profileLoading,
@@ -22,7 +21,6 @@ export function useAuthService() {
 		staleTime: 5 * 60 * 1000, // 5 minutes
 	});
 
-	// Login mutation
 	const loginMutation = useMutation({
 		mutationFn: async (credentials: Credentials) => {
 			const response = await authApi.login(credentials);
@@ -34,7 +32,7 @@ export function useAuthService() {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["auth-user"] });
-			refetch(); // Refetch the profile immediately
+			refetch();
 		},
 	});
 
@@ -50,11 +48,10 @@ export function useAuthService() {
 		},
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["auth-user"] });
-			refetch(); // Refetch the profile immediately
+			refetch();
 		},
 	});
 
-	// Logout function
 	const logout = async () => {
 		clearAuthToken();
 		queryClient.removeQueries({ queryKey: ["auth-user"] });

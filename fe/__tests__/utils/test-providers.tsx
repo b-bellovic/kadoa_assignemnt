@@ -20,14 +20,6 @@ export function createTestQueryClient() {
 				retry: false,
 			},
 		},
-		// Silence React Query errors in the console for cleaner test output
-		logger: {
-			// Keep console.log and console.warn as is
-			log: console.log,
-			warn: console.warn,
-			// Disable error logging as we test errors explicitly
-			error: () => {},
-		},
 	});
 }
 

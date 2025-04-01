@@ -13,11 +13,9 @@ export async function hashPassword(
 	// Generate a random salt
 	const salt = crypto.randomBytes(16).toString("hex");
 
-	// Hash with scrypt (N=16384, r=8, p=1, keylen=64)
 	return new Promise((resolve, reject) => {
 		crypto.scrypt(password, salt, 64, (err, derivedKey) => {
 			if (err) reject(err);
-			// Format: salt:hash
 			resolve(`${salt}:${derivedKey.toString("hex")}`);
 		});
 	});

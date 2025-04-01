@@ -26,7 +26,7 @@ export class DeleteColumnHandler
 	) {}
 
 	async execute(command: DeleteColumnCommand) {
-		const column = await this.columnService.getColumnById(command.columnId);
+		await this.columnService.getColumnById(command.columnId);
 
 		const tasksInColumn = await this.db
 			.getDB()

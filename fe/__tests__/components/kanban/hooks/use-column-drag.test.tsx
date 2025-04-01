@@ -2,6 +2,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
 import { useColumnDrag } from "@/components/kanban/hooks/use-column-drag";
 import { Column } from "@/components/kanban/types/types";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
 
 // Mock the calculateNewOrder function since it's a dependency
 vi.mock("@/components/kanban/utils", () => ({
@@ -9,6 +11,13 @@ vi.mock("@/components/kanban/utils", () => ({
 		// Simple mock implementation for testing
 		return toIndex === 0 ? 500 : 3000;
 	}),
+}));
+
+// Mock the kanban API
+vi.mock("@/api/kanban-api", () => ({
+	kanbanApi: {
+		reorderColumns: vi.fn(() => Promise.reject("Not implemented in test")), // Force fallback
+	},
 }));
 
 describe("useColumnDrag Hook", () => {
@@ -27,22 +36,33 @@ describe("useColumnDrag Hook", () => {
 
 	// Mock the updateColumn function
 	const mockUpdateColumn = vi.fn();
+	
+	// Create a client for React Query
+	const createWrapper = () => {
+		const queryClient = new QueryClient();
+		// eslint-disable-next-line react/display-name
+		return ({ children }: { children: React.ReactNode }) => (
+			<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+		);
+	};
 
 	beforeEach(() => {
 		vi.clearAllMocks();
 	});
 
 	it("should initialize with activeColumn set to null", () => {
-		const { result } = renderHook(() =>
-			useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+		const { result } = renderHook(
+			() => useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+			{ wrapper: createWrapper() }
 		);
 
 		expect(result.current.activeColumn).toBeNull();
 	});
 
 	it("should allow setting the active column", () => {
-		const { result } = renderHook(() =>
-			useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+		const { result } = renderHook(
+			() => useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+			{ wrapper: createWrapper() }
 		);
 
 		act(() => {
@@ -53,8 +73,9 @@ describe("useColumnDrag Hook", () => {
 	});
 
 	it("should handle column reordering from first to last position", async () => {
-		const { result } = renderHook(() =>
-			useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+		const { result } = renderHook(
+			() => useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+			{ wrapper: createWrapper() }
 		);
 
 		// Set active column
@@ -78,8 +99,9 @@ describe("useColumnDrag Hook", () => {
 	});
 
 	it("should handle column reordering from last to first position", async () => {
-		const { result } = renderHook(() =>
-			useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+		const { result } = renderHook(
+			() => useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+			{ wrapper: createWrapper() }
 		);
 
 		// Set active column
@@ -103,8 +125,9 @@ describe("useColumnDrag Hook", () => {
 	});
 
 	it("should not call updateColumn when source and target columns are the same", async () => {
-		const { result } = renderHook(() =>
-			useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+		const { result } = renderHook(
+			() => useColumnDrag({ columns: mockColumns, updateColumn: mockUpdateColumn }),
+			{ wrapper: createWrapper() }
 		);
 
 		// Set active column

@@ -16,26 +16,20 @@ interface AuthContextType {
 	isAuthenticated: boolean;
 }
 
-// Create context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Auth provider component
 export function AuthProvider({ children }: { children: React.ReactNode }) {
 	const [tokenChecked, setTokenChecked] = useState(false);
 
-	// Use our custom auth service hook
 	const auth = useAuthService();
 
-	// Force initial token check
 	useEffect(() => {
 		setTokenChecked(true);
 	}, []);
 
-	// Check token status on mount and periodically
 	useEffect(() => {
 		if (!tokenChecked) return;
 
-		// Refresh user status if we have a token
 		const refreshUserStatus = () => {
 			const token = getAuthToken();
 			if (token) {
@@ -43,19 +37,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 			}
 		};
 
-		// Check token initially
 		refreshUserStatus();
 
-		// Set up periodic check (every 5 minutes)
 		const intervalId = setInterval(refreshUserStatus, 5 * 60 * 1000);
 
 		return () => clearInterval(intervalId);
 	}, [auth.refetch, tokenChecked]);
 
-	// Determine if authenticated based on user existence and loading state
 	const loading = auth.loading || !tokenChecked;
 
-	// Provide auth context
 	return (
 		<AuthContext.Provider
 			value={{
@@ -73,7 +63,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 	);
 }
 
-// Custom hook to use auth context
 export function useAuth() {
 	const context = useContext(AuthContext);
 	if (context === undefined) {

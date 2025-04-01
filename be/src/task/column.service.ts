@@ -23,7 +23,6 @@ export class ColumnService {
 			})
 			.returning();
 
-		// Emit column created event
 		this.sseService.emit("board", {
 			type: ColumnEventType.CREATED,
 			data: {
@@ -64,7 +63,6 @@ export class ColumnService {
 			throw new NotFoundException(`Column with ID "${id}" not found`);
 		}
 
-		// Emit column updated event
 		this.sseService.emit("board", {
 			type: ColumnEventType.UPDATED,
 			data: {
@@ -86,8 +84,5 @@ export class ColumnService {
 		if (!column) {
 			throw new NotFoundException(`Column with ID "${id}" not found`);
 		}
-
-		// Note: Event emission for deletion is handled in DeleteColumnCommand
-		// to ensure proper validation before deletion
 	}
 }

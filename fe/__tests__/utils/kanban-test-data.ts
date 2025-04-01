@@ -72,20 +72,3 @@ export function createMockColumn(overrides: Partial<Column> = {}): Column {
 		...overrides,
 	};
 }
-
-/**
- * Create a new mock task with specified properties
- * @param overrides - Properties to override in the mock task
- */
-export function createMockTask(overrides: Partial<Task> = {}): Task {
-	return {
-		id: `task-${Date.now()}`,
-		title: "New Task",
-		description: "Task description",
-		columnId: "col1",
-		order: 3000,
-		createdAt: new Date().toISOString(),
-		updatedAt: new Date().toISOString(),
-		...overrides,
-	};
-}

@@ -33,14 +33,6 @@ export function renderWithProviders(
 	};
 }
 
-/**
- * Finds a button by its text and clicks it
- * @param buttonText - Text content of the button
- */
-export async function clickButton(buttonText: string | RegExp) {
-	const button = screen.getByRole("button", { name: buttonText });
-	button.click();
-}
 
 /**
  * Waits for an element with a specific test ID to appear

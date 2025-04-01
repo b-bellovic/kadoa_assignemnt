@@ -135,33 +135,7 @@ export const removeColumnFromCache = (
 	});
 };
 
-/**
- * Updates multiple columns with new ordering information
- * @param queryClient - React Query client
- * @param updatedColumns - Array of columns with updated order property
- */
-export const updateColumnsOrderInCache = (
-	queryClient: QueryClient,
-	updatedColumns: Column[],
-): void => {
-	updateBoardCache(queryClient, (currentData) => {
-		// Create a map of columnId -> updated order
-		const orderUpdates = new Map(
-			updatedColumns.map((column) => [column.id, column.order]),
-		);
 
-		// Update each column that has a new order value
-		const updatedColumnsArray = currentData.columns.map((column) => {
-			const newOrder = orderUpdates.get(column.id);
-			return newOrder !== undefined ? { ...column, order: newOrder } : column;
-		});
-
-		return {
-			...currentData,
-			columns: updatedColumnsArray,
-		};
-	});
-};
 
 /**
  * Changes the column of a task in the board cache
@@ -188,50 +162,4 @@ export const moveTaskToColumnInCache = (
 				: task,
 		),
 	}));
-};
-
-/**
- * Completely replaces the columns array in the board cache
- * @param queryClient - React Query client
- * @param columns - New columns array
- */
-export const replaceColumnsInCache = (
-	queryClient: QueryClient,
-	columns: Column[],
-): void => {
-	updateBoardCache(queryClient, (currentData) => ({
-		...currentData,
-		columns,
-	}));
-};
-
-/**
- * Gets the highest order value for tasks in a specific column
- * @param tasks - Array of all tasks
- * @param columnId - ID of the column to check
- * @returns The highest order value plus 1000, or 1000 if no tasks exist
- */
-export const getNextTaskOrder = (tasks: Task[], columnId: string): number => {
-	const tasksInColumn = tasks.filter((t) => t.columnId === columnId);
-
-	if (tasksInColumn.length === 0) {
-		return 1000;
-	}
-
-	const highestOrder = Math.max(...tasksInColumn.map((t) => t.order));
-	return highestOrder + 1000;
-};
-
-/**
- * Gets the highest order value for columns
- * @param columns - Array of all columns
- * @returns The highest order value plus 1000, or 1000 if no columns exist
- */
-export const getNextColumnOrder = (columns: Column[]): number => {
-	if (columns.length === 0) {
-		return 1000;
-	}
-
-	const highestOrder = Math.max(...columns.map((c) => c.order));
-	return highestOrder + 1000;
 };

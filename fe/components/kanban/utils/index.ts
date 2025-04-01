@@ -12,9 +12,3 @@ export * from "./drag-drop-utils";
  * Event handlers for real-time updates
  */
 export * from "./event-handlers";
-
-// Error handling utilities
-export * from "./error-utils";
-
-// Optimistic update utilities
-export * from "./optimistic-updates";

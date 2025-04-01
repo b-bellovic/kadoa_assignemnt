@@ -64,7 +64,7 @@ export async function evaluate({
 	prompt,
 	inputs,
 	outputs,
-	model = "openai:o3-mini",
+	model = "o3-mini",
 }: {
 	prompt: string;
 	inputs: unknown;
@@ -72,7 +72,7 @@ export async function evaluate({
 	model?: string;
 }): Promise<EvaluationResult> {
 	const result = await generateObject({
-		model: openai("o3-mini"),
+		model: openai(model),
 		system: `You are an expert evaluator that analyzes outputs based on given criteria.
 Your task is to:
 1. Carefully analyze the input and output

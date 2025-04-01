@@ -32,11 +32,9 @@ export class UserController {
 
 		const user = await this.userService.create(createUserDto);
 
-		// Generate JWT token just like in login
 		const payload = { sub: user.id, email: user.email };
 		const access_token = this.jwtService.sign(payload);
 
-		// Don't return the password hash
 		const { password, ...result } = user;
 		return {
 			...result,

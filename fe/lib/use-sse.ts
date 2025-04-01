@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { getAuthToken } from "./api-client";
 import { API_URL } from "./config";
+import { getAuthToken } from "./auth-token";
 
 type EventCallback = (eventType: string, data: any) => void;
 
-// Singleton event bus for SSE
 class EventBus {
 	private static instance: EventBus;
 	private subscribers: Map<string, Set<EventCallback>> = new Map();
@@ -16,7 +15,6 @@ class EventBus {
 
 	private constructor() {}
 
-	// Get singleton instance
 	public static getInstance(): EventBus {
 		if (!EventBus.instance) {
 			EventBus.instance = new EventBus();
@@ -24,26 +22,22 @@ class EventBus {
 		return EventBus.instance;
 	}
 
-	// Connect to SSE endpoint
 	public connect(baseUrl: string, topics: string[], token: string) {
 		if (this.eventSource && this.isConnected) {
 			return; // Already connected
 		}
 
-		// Close existing connection if any
 		if (this.eventSource) {
 			this.eventSource.close();
 			this.eventSource = null;
 		}
 
-		// Build URL with topics and token
 		const url = `${baseUrl}/events/subscribe?topics=${topics.join(",")}&token=${encodeURIComponent(token)}`;
 
 		try {
 			this.eventSource = new EventSource(url);
 
 			this.eventSource.onopen = () => {
-				// SSE connected
 				this.isConnected = true;
 				this.reconnecting = false;
 			};
@@ -63,7 +57,6 @@ class EventBus {
 			};
 
 			this.eventSource.onerror = (error) => {
-				// SSE connection error
 				this.isConnected = false;
 
 				if (!this.reconnecting) {
@@ -71,10 +64,8 @@ class EventBus {
 					this.eventSource?.close();
 					this.eventSource = null;
 
-					// Simple reconnection attempt
 					setTimeout(() => {
 						if (this.hasSubscribers()) {
-							// Attempting to reconnect SSE
 							this.connect(baseUrl, topics, token);
 						}
 					}, 3000);
@@ -85,7 +76,6 @@ class EventBus {
 		}
 	}
 
-	// Check if we have any subscribers
 	private hasSubscribers(): boolean {
 		for (const subscribers of this.subscribers.values()) {
 			if (subscribers.size > 0) return true;
@@ -93,18 +83,15 @@ class EventBus {
 		return false;
 	}
 
-	// Disconnect from SSE
 	public disconnect() {
 		if (this.eventSource) {
 			this.eventSource.close();
 			this.eventSource = null;
 			this.isConnected = false;
 		}
-		// Clear all subscribers
 		this.subscribers.clear();
 	}
 
-	// Subscribe to an event type
 	public subscribe(eventType: string, callback: EventCallback): () => void {
 		if (!this.subscribers.has(eventType)) {
 			this.subscribers.set(eventType, new Set());
@@ -112,7 +99,6 @@ class EventBus {
 
 		this.subscribers.get(eventType)?.add(callback);
 
-		// Return unsubscribe function
 		return () => {
 			const subscribers = this.subscribers.get(eventType);
 			if (subscribers) {
@@ -122,21 +108,16 @@ class EventBus {
 				}
 			}
 
-			// If no more subscribers, disconnect
 			if (!this.hasSubscribers()) {
 				this.disconnect();
 			}
 		};
 	}
 
-	// Notify subscribers of an event
 	private notifySubscribers(eventType: string, data: any) {
-		// Get subscribers for this specific event type
 		const eventSubscribers = this.subscribers.get(eventType) || new Set();
-		// Get wildcard subscribers
 		const wildcardSubscribers = this.subscribers.get("*") || new Set();
 
-		// Notify all matching subscribers
 		[...eventSubscribers, ...wildcardSubscribers].forEach((callback) => {
 			try {
 				callback(eventType, data);
@@ -147,11 +128,9 @@ class EventBus {
 	}
 }
 
-// React hook for using the event bus
 export function useSse(eventTypes: string[], callback: EventCallback) {
 	const callbackRef = useRef(callback);
 
-	// Keep callback reference updated
 	useEffect(() => {
 		callbackRef.current = callback;
 	}, [callback]);
@@ -165,19 +144,16 @@ export function useSse(eventTypes: string[], callback: EventCallback) {
 			return;
 		}
 
-		// Connect to SSE
 		eventBus.connect(API_URL, eventTypes, token);
 
-		// Subscribe to all specified event types
 		const unsubscribes = eventTypes.map((eventType) =>
 			eventBus.subscribe(eventType, (type, data) =>
 				callbackRef.current(type, data),
 			),
 		);
 
-		// Cleanup: unsubscribe on unmount
 		return () => {
 			unsubscribes.forEach((unsubscribe) => unsubscribe());
 		};
-	}, [eventTypes]); // Only re-run if event types change
+	}, [eventTypes]);
 }

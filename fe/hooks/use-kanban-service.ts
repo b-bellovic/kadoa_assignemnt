@@ -19,7 +19,6 @@ export function useKanbanService() {
 	const queryClient = useQueryClient();
 	const boardQueryKey = ["board"];
 
-	// Query for fetching the board
 	const {
 		data: boardData,
 		isLoading,
@@ -31,11 +30,8 @@ export function useKanbanService() {
 		staleTime: 5 * 60 * 1000, // 5 minutes
 	});
 
-	// Extract columns and tasks for convenience
 	const columns = boardData?.columns || [];
 	const tasks = boardData?.tasks || [];
-
-	// COLUMN MUTATIONS
 
 	// Create column mutation
 	const createColumnMutation = createMutation(
@@ -50,21 +46,17 @@ export function useKanbanService() {
 		},
 	);
 
-	// Update column mutation
 	const updateColumnMutation = createMutation(
 		queryClient,
 		({ columnId, updates }: { columnId: string; updates: ColumnUpdates }) =>
 			kanbanApi.updateColumn(columnId, updates),
 		{
 			onMutate: async ({ columnId, updates }) => {
-				// Cancel any outgoing refetches so they don't overwrite our optimistic update
 				await queryClient.cancelQueries({ queryKey: boardQueryKey });
 
-				// Snapshot the previous value
 				const previousBoard =
 					queryClient.getQueryData<BoardData>(boardQueryKey);
 
-				// Perform an optimistic update to the UI
 				if (previousBoard) {
 					queryClient.setQueryData<BoardData>(boardQueryKey, {
 						...previousBoard,
@@ -74,43 +66,35 @@ export function useKanbanService() {
 					});
 				}
 
-				// Return a context object with the snapshot
 				return { previousBoard };
 			},
-			// If the mutation fails, use the context returned from onMutate to roll back
 			onError: (err, variables, context) => {
 				if (context?.previousBoard) {
 					queryClient.setQueryData(boardQueryKey, context.previousBoard);
 				}
 			},
-			// Always refetch after error or success to ensure data is correct
 			onSettled: () => {
 				queryClient.invalidateQueries({ queryKey: boardQueryKey });
 			},
 		},
 	);
 
-	// Delete column mutation
 	const deleteColumnMutation = createMutation(
 		queryClient,
 		(columnId: string) => kanbanApi.deleteColumn(columnId),
 		{
 			onMutate: async (columnId) => {
-				// Cancel any outgoing refetches
 				await queryClient.cancelQueries({ queryKey: boardQueryKey });
 
-				// Snapshot the previous value
 				const previousBoard =
 					queryClient.getQueryData<BoardData>(boardQueryKey);
 
-				// Optimistically update the UI
 				if (previousBoard) {
 					queryClient.setQueryData<BoardData>(boardQueryKey, {
 						...previousBoard,
 						columns: previousBoard.columns.filter(
 							(column) => column.id !== columnId,
 						),
-						// Also remove tasks belonging to this column
 						tasks: previousBoard.tasks.filter(
 							(task) => task.columnId !== columnId,
 						),
@@ -130,9 +114,6 @@ export function useKanbanService() {
 		},
 	);
 
-	// TASK MUTATIONS
-
-	// Create task mutation
 	const createTaskMutation = createMutation(
 		queryClient,
 		(params: CreateTaskParams) =>
@@ -149,7 +130,6 @@ export function useKanbanService() {
 		},
 	);
 
-	// Update task mutation
 	const updateTaskMutation = createMutation(
 		queryClient,
 		({ taskId, updates }: { taskId: string; updates: TaskUpdates }) =>
@@ -183,7 +163,6 @@ export function useKanbanService() {
 		},
 	);
 
-	// Delete task mutation
 	const deleteTaskMutation = createMutation(
 		queryClient,
 		(taskId: string) => kanbanApi.deleteTask(taskId),
