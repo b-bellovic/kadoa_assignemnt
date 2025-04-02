@@ -4,6 +4,7 @@ import { eq } from "drizzle-orm";
 import { DatabaseService } from "../../database";
 import { tasks } from "../../schema";
 import { TaskService } from "../task.service";
+import {SSEService} from "../../sse/sse.service";
 
 export class ReorderTasksCommand implements ICommand {
 	constructor(
@@ -20,6 +21,7 @@ export class ReorderTasksHandler
 	constructor(
 		private readonly db: DatabaseService,
 		private readonly taskService: TaskService,
+		private readonly sseService: SSEService,
 	) {}
 
 	async execute(command: ReorderTasksCommand): Promise<void> {
@@ -44,5 +46,10 @@ export class ReorderTasksHandler
 					.where(eq(tasks.id, taskId)),
 			),
 		);
+
+		this.sseService.emit("tasks.reordered", {
+			taskIds,
+		});
+
 	}
 }
